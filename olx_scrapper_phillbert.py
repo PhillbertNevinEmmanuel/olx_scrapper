@@ -9,7 +9,6 @@ options = webdriver.ChromeOptions()
 options.add_argument("start-maximalized")
 url = 'https://www.olx.co.id/jakarta-selatan_g4000030/q-mobil'
 driver = webdriver.Chrome()
-driver.maximize_window()
 driver.get(url)
 
 for i in range(100):
@@ -19,20 +18,19 @@ for i in range(100):
         time.sleep(3)
     except NoSuchElementException:
         break
-time.sleep(5)
+time.sleep(10)
 
 products = []
-soup = BeautifulSoup(driver.page_source, "html_parser")
-for item in soup.findAll('li', class_ = '_1DNjI'):
-    product_name = item.find('span', class_= '_2poNJ').text
+soup = BeautifulSoup(driver.page_source, "html.parser")
+for item in soup.find_all('li', class_='_1DNjI'):
+    product_name = item.find('span', class_='_2poNJ').text
     price = item.find('span', class_='_2Ks63').text
     products.append((product_name, price))
 
-df = pd.DataFrame(products, columns=['Car Name', 'Price'])
+df = pd.DataFrame(products, columns=['Product Name', 'Price'])
 print(df)
 
-df.to_csv(r'OLX Scrapper.csv', index=False)
-print('Data saved to local disk!')
+df.to_csv(r'OLX Scrapper Phillbert.csv', index=False)
+print('Data saved in local disk')
 
-driver.close()
-
+driver.quit()
